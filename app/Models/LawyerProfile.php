@@ -72,7 +72,15 @@ class LawyerProfile extends Model
     /**
      * Admin who reviewed the profile.
      */
-    public function reviewer(): BelongsTo
+    // public function reviewer(): BelongsTo
+    // {
+    //     return $this->belongsTo(
+    //         User::class,
+    //         'reviewed_by'
+    //     );
+    // }
+
+    public function reviewedBy()
     {
         return $this->belongsTo(
             User::class,

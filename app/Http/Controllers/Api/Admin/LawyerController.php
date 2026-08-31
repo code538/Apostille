@@ -161,6 +161,7 @@ class LawyerController extends Controller
     public function show(
         LawyerProfile $lawyer
     ): JsonResponse {
+       
         try {
 
             $lawyer->load([

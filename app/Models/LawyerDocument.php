@@ -66,4 +66,12 @@ class LawyerDocument extends Model
         return $this->expires_at !== null
             && $this->expires_at->isPast();
     }
+
+    public function reviewedBy(): BelongsTo
+    {
+        return $this->belongsTo(
+            User::class,
+            'reviewed_by'
+        );
+    }
 }

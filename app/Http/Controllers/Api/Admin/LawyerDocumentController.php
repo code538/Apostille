@@ -130,8 +130,8 @@ class LawyerDocumentController extends Controller
 
             $document->update([
                 'verification_status' => 'verified',
-                'reviewed_by' => $request->user()->id,
-                'reviewed_at' => now(),
+                'verified_by' => $request->user()->id,
+                'verified_at' => now(),
                 'reviewer_notes' => $request->input(
                     'notes'
                 ),
@@ -180,6 +180,17 @@ class LawyerDocumentController extends Controller
                 'Failed to verify document.',
                 500
             );
+
+            // report($e);
+
+            // return $this->response->error(
+            //     $e->getMessage(),
+            //     500,
+            //     [
+            //         'file' => $e->getFile(),
+            //         'line' => $e->getLine(),
+            //     ]
+            // );
         }
     }
 

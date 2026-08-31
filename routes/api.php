@@ -134,6 +134,10 @@ Route::middleware(['auth:sanctum', 'role:apostille-officer',])->prefix('apostill
     Route::post('/service-regions', [ LawyerServiceRegionController::class, 'store' ]); 
     Route::put('/service-regions/{serviceRegion}', [ LawyerServiceRegionController::class, 'update' ]); 
     Route::delete('/service-regions/{serviceRegion}', [ LawyerServiceRegionController::class, 'destroy' ]);
+
+    Route::get('/services', [ServiceController::class,'index']);
+    Route::get( '/countries', [CountryController::class, 'index'] ); 
+    Route::get( 'countries/{country}', [CountryController::class, 'show'] ); 
 });
 
 
