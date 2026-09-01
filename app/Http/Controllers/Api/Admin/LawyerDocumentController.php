@@ -57,19 +57,19 @@ class LawyerDocumentController extends Controller
         LawyerProfile $lawyer,
         LawyerDocument $document
     ) {
-        dd(
-            $lawyer,
-            $document,
-            $lawyer->id,
-            $document->lawyer_profile_id
-        );
+        // dd(
+        //     $lawyer,
+        //     $document,
+        //     $lawyer->id,
+        //     $document->lawyer_profile_id
+        // );
         try {
 
             /*
              * Make sure document belongs to this lawyer.
              */
             if (
-                $document->lawyer_profile_id !== $lawyer->id
+                $document->lawyer_profile_id != $lawyer->id
             ) {
                 return $this->response->error(
                     'Document does not belong to this lawyer.',
