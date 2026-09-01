@@ -57,6 +57,10 @@ class LawyerDocumentController extends Controller
         LawyerProfile $lawyer,
         LawyerDocument $document
     ) {
+        dd(
+            $lawyer->id,
+            $document->lawyer_profile_id
+        );
         try {
 
             /*
