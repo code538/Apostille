@@ -45,9 +45,14 @@ class LawyerProfileController extends Controller
                 ->first();
 
             if (! $profile) {
-                return $this->response->error(
-                    'Lawyer profile not found.',
-                    404
+                // return $this->response->error(
+                //     'Lawyer profile not found.',
+                //     404
+                // );
+
+                return $this->response->success(
+                    $user,
+                    'Please update your profile.'
                 );
             }
 
