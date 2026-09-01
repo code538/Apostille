@@ -58,6 +58,8 @@ class LawyerDocumentController extends Controller
         LawyerDocument $document
     ) {
         dd(
+            $lawyer,
+            $document,
             $lawyer->id,
             $document->lawyer_profile_id
         );
