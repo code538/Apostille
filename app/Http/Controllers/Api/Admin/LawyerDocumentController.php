@@ -126,7 +126,7 @@ class LawyerDocumentController extends Controller
              * Make sure document belongs to lawyer.
              */
             if (
-                $document->lawyer_profile_id !== $lawyer->id
+                $document->lawyer_profile_id != $lawyer->id
             ) {
                 return $this->response->error(
                     'Document does not belong to this lawyer.',
@@ -221,7 +221,7 @@ class LawyerDocumentController extends Controller
         try {
 
             if (
-                $document->lawyer_profile_id !== $lawyer->id
+                $document->lawyer_profile_id != $lawyer->id
             ) {
                 return $this->response->error(
                     'Document does not belong to this lawyer.',
