@@ -77,4 +77,11 @@ class LawyerServiceRegion extends Model
     {
         return is_null($this->region_id);
     }
+
+    public function pricings()
+    {
+        return $this->hasMany(
+            LawyerServicePricing::class
+        );
+    }
 }

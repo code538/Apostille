@@ -19,16 +19,25 @@ use App\Http\Controllers\Api\Finance\FinanceController;
 use App\Http\Controllers\Api\Courier\CourierController;
 // Customer Support
 use App\Http\Controllers\Api\Support\SupportController;
+
+//Admin Controllers
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Admin\CountryController;
 use App\Http\Controllers\Api\Admin\RegionController;
 use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\Api\Admin\LawyerController;
+use App\Http\Controllers\Api\Admin\LawyerDocumentController as AdminLawyerDocumentController;
+
+//Lawyer Controllers
 use App\Http\Controllers\Api\Lawyer\LawyerProfileController;
 use App\Http\Controllers\Api\Lawyer\LawyerDocumentController;
 use App\Http\Controllers\Api\Lawyer\LawyerServiceRegionController;
 
-use App\Http\Controllers\Api\Admin\LawyerController;
-use App\Http\Controllers\Api\Admin\LawyerDocumentController as AdminLawyerDocumentController;
+// Customer Controllers
+use App\Http\Controllers\Api\Customer\ServiceController as CustomerServiceController;
+use App\Http\Controllers\Api\Customer\LocationController;
+use App\Http\Controllers\Api\Customer\LawyerController as CustomerLawyerController;
+
 
 
 
@@ -117,6 +126,14 @@ Route::middleware(['auth:sanctum','role:super-admin',])->prefix('super-admin')->
 
 Route::middleware(['auth:sanctum', 'role:customer',])->prefix('customer')->group(function () {
     Route::get('/dashboard',[CustomerController::class, 'dashboard']);
+
+    Route::get('/services', [CustomerServiceController::class, 'index']);
+    Route::get('/services/{service}', [CustomerServiceController::class, 'show']);
+
+    Route::get('/countries', [LocationController::class, 'countries']);
+    Route::get('/countries/{country}/regions', [LocationController::class, 'regions']);
+
+    Route::get('/lawyers', [CustomerLawyerController::class, 'index']);
 
 });
 

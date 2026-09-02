@@ -35,4 +35,12 @@ class Service extends Model
     {
         return $query->where('status', 'active');
     }
+
+    // Which services require which documents, and in which countries/regions.
+    public function documentRequirements()
+    {
+        return $this->hasMany(
+            ServiceDocumentRequirement::class
+        );
+    }
 }

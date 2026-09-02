@@ -166,6 +166,52 @@ class User extends Authenticatable
             LawyerProfile::class
         );
     }
+
+
+    public function orders()
+    {
+        return $this->hasMany(
+            Order::class
+        );
+    }
+
+    public function assignedOrders()
+    {
+        return $this->hasMany(
+            Order::class,
+            'assigned_officer_id'
+        );
+    }
+
+    public function orderAssignments()
+    {
+        return $this->hasMany(
+            OrderAssignment::class,
+            'assigned_to'
+        );
+    }
+
+    public function createdCharges()
+    {
+        return $this->hasMany(
+            OrderCharge::class,
+            'created_by'
+        );
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(
+            Payment::class
+        );
+    }
+
+    public function businessProfile()
+    {
+        return $this->hasOne(
+            BusinessProfile::class
+        );
+    }
   
 }
 
