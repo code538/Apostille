@@ -27,16 +27,20 @@ use App\Http\Controllers\Api\Admin\RegionController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\Admin\LawyerController;
 use App\Http\Controllers\Api\Admin\LawyerDocumentController as AdminLawyerDocumentController;
+use App\Http\Controllers\Api\Admin\ServiceDocumentRequirementController;
+use App\Http\Controllers\Api\Admin\LawyerServicePricingController as AdminLawyerServicePricingController;
 
 //Lawyer Controllers
 use App\Http\Controllers\Api\Lawyer\LawyerProfileController;
 use App\Http\Controllers\Api\Lawyer\LawyerDocumentController;
 use App\Http\Controllers\Api\Lawyer\LawyerServiceRegionController;
+use App\Http\Controllers\Api\Lawyer\LawyerServicePricingController;
 
 // Customer Controllers
 use App\Http\Controllers\Api\Customer\ServiceController as CustomerServiceController;
 use App\Http\Controllers\Api\Customer\LocationController;
 use App\Http\Controllers\Api\Customer\LawyerController as CustomerLawyerController;
+use App\Http\Controllers\Api\Customer\ServiceDocumentRequirementController as CustomerServiceDocumentRequirementController;
 
 
 
@@ -114,7 +118,25 @@ Route::middleware(['auth:sanctum','role:administrator,super-admin',])->prefix('a
         Route::post('/{lawyer}/documents/{document}/verify', [ AdminLawyerDocumentController::class, 'verify' ]); 
         Route::post('/{lawyer}/documents/{document}/reject', [ AdminLawyerDocumentController::class, 'reject' ]);
     });
-   
+
+    Route::prefix('service-document-requirements')->group(function () {
+        Route::get('/', [ServiceDocumentRequirementController::class, 'index']);
+        Route::post('/', [ServiceDocumentRequirementController::class, 'store']);
+        Route::get('/{requirement}', [ServiceDocumentRequirementController::class, 'show']);
+        Route::put('/{requirement}', [ServiceDocumentRequirementController::class, 'update']);
+        Route::delete('/{requirement}', [ServiceDocumentRequirementController::class, 'destroy']);
+        Route::patch('/{requirement}/status', [ServiceDocumentRequirementController::class, 'statusChange']);
+    });
+    //Route::get('/services/{service}/document-requirements', [ServiceDocumentRequirementController::class, 'serviceRequirements']);
+
+    Route::prefix('lawyer-service-pricings')->group(function () {
+        Route::get('/', [AdminLawyerServicePricingController::class, 'index']);
+        Route::post('/', [AdminLawyerServicePricingController::class,'store']);
+        Route::get('/{pricing}', [AdminLawyerServicePricingController::class, 'show']);
+        Route::put('/{pricing}', [AdminLawyerServicePricingController::class, 'update']);
+        Route::delete('/{pricing}', [AdminLawyerServicePricingController::class, 'destroy']);
+        Route::patch('/{pricing}/status', [AdminLawyerServicePricingController::class, 'statusChange']);
+    });
 
 });
 
@@ -132,6 +154,9 @@ Route::middleware(['auth:sanctum', 'role:customer',])->prefix('customer')->group
 
     Route::get('/countries', [LocationController::class, 'countries']);
     Route::get('/countries/{country}/regions', [LocationController::class, 'regions']);
+
+    //Route::get('/services/{service}/document-requirements',[CustomerServiceDocumentRequirementController::class,'index']);
+    Route::get('/service-document-requirements',[CustomerServiceDocumentRequirementController::class, 'index']);
 
     Route::get('/lawyers', [CustomerLawyerController::class, 'index']);
 
@@ -155,6 +180,15 @@ Route::middleware(['auth:sanctum', 'role:apostille-officer',])->prefix('apostill
     Route::get('/services', [ServiceController::class,'index']);
     Route::get( '/countries', [CountryController::class, 'index'] ); 
     Route::get( 'countries/{country}', [CountryController::class, 'show'] ); 
+
+    Route::prefix('service-pricings')->group(function () {
+        Route::get('/', [LawyerServicePricingController::class, 'index']);
+        Route::post('/', [LawyerServicePricingController::class, 'store']);
+        Route::put('/{pricing}', [LawyerServicePricingController::class, 'update']);
+        Route::delete('/{pricing}', [LawyerServicePricingController::class, 'destroy']);
+    });
+
+
 });
 
 

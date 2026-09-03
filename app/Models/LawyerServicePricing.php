@@ -22,6 +22,7 @@ class LawyerServicePricing extends Model
     protected $casts = [
         'fee' => 'decimal:2',
         'estimated_days' => 'integer',
+        'status' => 'string',
     ];
 
     /**
@@ -32,5 +33,10 @@ class LawyerServicePricing extends Model
         return $this->belongsTo(
             LawyerServiceRegion::class
         );
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
     }
 }
