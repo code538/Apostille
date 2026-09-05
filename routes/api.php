@@ -29,6 +29,8 @@ use App\Http\Controllers\Api\Admin\LawyerController;
 use App\Http\Controllers\Api\Admin\LawyerDocumentController as AdminLawyerDocumentController;
 use App\Http\Controllers\Api\Admin\ServiceDocumentRequirementController;
 use App\Http\Controllers\Api\Admin\LawyerServicePricingController as AdminLawyerServicePricingController;
+use App\Http\Controllers\Api\Admin\DeliveryMethodController;
+use App\Http\Controllers\Api\Admin\DeliveryMethodRateController;
 
 //Lawyer Controllers
 use App\Http\Controllers\Api\Lawyer\LawyerProfileController;
@@ -41,6 +43,7 @@ use App\Http\Controllers\Api\Customer\ServiceController as CustomerServiceContro
 use App\Http\Controllers\Api\Customer\LocationController;
 use App\Http\Controllers\Api\Customer\LawyerController as CustomerLawyerController;
 use App\Http\Controllers\Api\Customer\ServiceDocumentRequirementController as CustomerServiceDocumentRequirementController;
+use App\Http\Controllers\Api\Customer\OrderController;
 
 
 
@@ -138,6 +141,24 @@ Route::middleware(['auth:sanctum','role:administrator,super-admin',])->prefix('a
         Route::patch('/{pricing}/status', [AdminLawyerServicePricingController::class, 'statusChange']);
     });
 
+    Route::prefix('delivery-methods')->group(function () {
+        Route::get('/', [DeliveryMethodController::class,'index']);
+        Route::post('/', [DeliveryMethodController::class, 'store']);
+        Route::get('/{deliveryMethod}', [DeliveryMethodController::class, 'show']);
+        Route::put('/{deliveryMethod}', [DeliveryMethodController::class, 'update']);
+        Route::delete('/{deliveryMethod}', [DeliveryMethodController::class, 'destroy']);
+        Route::patch('/{deliveryMethod}/status', [DeliveryMethodController::class, 'statusChange']);
+    });
+
+    Route::prefix('delivery-method-rates')->group(function () {
+        Route::get('/', [DeliveryMethodRateController::class, 'index']);
+        Route::post('/', [DeliveryMethodRateController::class, 'store']);
+        Route::get('/{deliveryMethodRate}', [DeliveryMethodRateController::class, 'show']);
+        Route::put('/{deliveryMethodRate}', [DeliveryMethodRateController::class, 'update']);
+        Route::delete('/{deliveryMethodRate}', [DeliveryMethodRateController::class, 'destroy']);
+        Route::patch('/{deliveryMethodRate}/status', [DeliveryMethodRateController::class, 'statusChange']);
+    });
+
 });
 
 Route::middleware(['auth:sanctum','role:super-admin',])->prefix('super-admin')->group(function () {
@@ -159,6 +180,13 @@ Route::middleware(['auth:sanctum', 'role:customer',])->prefix('customer')->group
     Route::get('/service-document-requirements',[CustomerServiceDocumentRequirementController::class, 'index']);
 
     Route::get('/lawyers', [CustomerLawyerController::class, 'index']);
+
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrderController::class,'index']);
+        Route::post('/', [OrderController::class, 'store']);
+        Route::get('/{order}', [OrderController::class, 'show']);
+        Route::patch('/{order}/cancel', [OrderController::class, 'cancel']);
+    });
 
 });
 

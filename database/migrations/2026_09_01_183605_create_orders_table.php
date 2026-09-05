@@ -41,6 +41,10 @@ return new class extends Migration
                 ->constrained('regions')
                 ->nullOnDelete();
 
+            $table->foreignId('delivery_method_id')
+                ->constrained('delivery_methods')
+                ->restrictOnDelete();    
+
             // Internal officer assigned to process this order.
             $table->foreignId('assigned_officer_id')
                 ->nullable()

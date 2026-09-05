@@ -14,7 +14,7 @@ class Order extends Model
 
     protected $fillable = [
         'order_number',
-        'user_id',
+        'customer_id',
         'lawyer_profile_id',
         'service_id',
         'country_id',
@@ -62,7 +62,7 @@ class Order extends Model
     {
         return $this->belongsTo(
             User::class,
-            'user_id'
+            'customer_id'
         );
     }
 
@@ -288,4 +288,14 @@ class Order extends Model
             OrderCertificate::class
         );
     }
+
+    public function lawyerServicePricing(): BelongsTo
+    {
+        return $this->belongsTo(
+            LawyerServicePricing::class,
+            'lawyer_service_pricing_id'
+        );
+    }
+
+  
 }

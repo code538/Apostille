@@ -13,36 +13,45 @@ class DeliveryMethodRate extends Model
     protected $fillable = [
         'delivery_method_id',
         'country_id',
-        'region_id',
-        'fee',
+        'price',
         'currency',
         'estimated_days',
         'status',
     ];
 
     protected $casts = [
-        'fee' => 'decimal:2',
+        'price' => 'decimal:2',
         'estimated_days' => 'integer',
+        'status' => 'string',
     ];
 
+    /**
+     * Delivery method.
+     */
     public function deliveryMethod(): BelongsTo
     {
         return $this->belongsTo(
-            DeliveryMethod::class
+            DeliveryMethod::class,
+            'delivery_method_id'
         );
     }
 
+    /**
+     * Country.
+     */
     public function country(): BelongsTo
     {
         return $this->belongsTo(
-            Country::class
+            Country::class,
+            'country_id'
         );
     }
 
-    public function region(): BelongsTo
+    /**
+     * Check whether rate is active.
+     */
+    public function isActive(): bool
     {
-        return $this->belongsTo(
-            Region::class
-        );
+        return $this->status === 'active';
     }
 }
