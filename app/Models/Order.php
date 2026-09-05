@@ -12,42 +12,119 @@ class Order extends Model
 {
     use HasFactory;
 
+    // protected $fillable = [
+    //     'order_number',
+    //     'customer_id',
+    //     'lawyer_profile_id',
+    //     'service_id',
+    //     'country_id',
+    //     'region_id',
+    //     'lawyer_service_region_id',
+    //     'lawyer_service_pricing_id',
+    //     'service_level',
+    //     'delivery_method_id',
+    //     'status',
+    //     'payment_status',
+    //     'subtotal',
+    //     'delivery_fee',
+    //     'additional_fee',
+    //     'discount',
+    //     'tax',
+    //     'total_amount',
+    //     'currency',
+    //     'customer_notes',
+    //     'internal_notes',
+    //     'assigned_officer_id',
+    //     'started_at',
+    //     'completed_at',
+    //     'cancelled_at',
+    // ];
+
     protected $fillable = [
-        'order_number',
         'customer_id',
+
         'lawyer_profile_id',
+        'lawyer_service_region_id',
+        'lawyer_service_pricing_id',
+
         'service_id',
         'country_id',
         'region_id',
-        'lawyer_service_region_id',
-        'service_level',
+
         'delivery_method_id',
+
+        'assigned_officer_id',
+
+        'order_number',
+
+        'service_level',
+
+        /*
+        * Historical pricing snapshot.
+        */
+        'service_fee',
+        'currency',
+        'estimated_processing_days',
+
+        /*
+        * Order status.
+        */
         'status',
         'payment_status',
-        'subtotal',
+
+        /*
+        * Financial snapshot.
+        */
+        'service_fee_total',
         'delivery_fee',
         'additional_fee',
-        'discount',
-        'tax',
+        'tax_amount',
+        'discount_amount',
+        'subtotal',
         'total_amount',
-        'currency',
-        'customer_notes',
-        'internal_notes',
-        'assigned_officer_id',
-        'started_at',
+
+        /*
+        * Dates.
+        */
+        'submitted_at',
+        'paid_at',
         'completed_at',
         'cancelled_at',
+
+        /*
+        * Notes.
+        */
+        'customer_notes',
+        'internal_notes',
     ];
 
+    // protected $casts = [
+    //     'subtotal' => 'decimal:2',
+    //     'delivery_fee' => 'decimal:2',
+    //     'additional_fee' => 'decimal:2',
+    //     'discount' => 'decimal:2',
+    //     'tax' => 'decimal:2',
+    //     'total_amount' => 'decimal:2',
+
+    //     'started_at' => 'datetime',
+    //     'completed_at' => 'datetime',
+    //     'cancelled_at' => 'datetime',
+    // ];
+
     protected $casts = [
-        'subtotal' => 'decimal:2',
+        'service_fee' => 'decimal:2',
+        'service_fee_total' => 'decimal:2',
         'delivery_fee' => 'decimal:2',
         'additional_fee' => 'decimal:2',
-        'discount' => 'decimal:2',
-        'tax' => 'decimal:2',
+        'tax_amount' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
+        'subtotal' => 'decimal:2',
         'total_amount' => 'decimal:2',
 
-        'started_at' => 'datetime',
+        'estimated_processing_days' => 'integer',
+
+        'submitted_at' => 'datetime',
+        'paid_at' => 'datetime',
         'completed_at' => 'datetime',
         'cancelled_at' => 'datetime',
     ];

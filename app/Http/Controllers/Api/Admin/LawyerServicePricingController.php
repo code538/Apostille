@@ -28,7 +28,7 @@ class LawyerServicePricingController extends Controller
                 ->with([
                     'lawyerServiceRegion.lawyerProfile.user:id,name,email',
                     'lawyerServiceRegion.service:id,name,slug',
-                    'lawyerServiceRegion.country:id,name,code',
+                    'lawyerServiceRegion.country:id,name,iso2',
                     'lawyerServiceRegion.region:id,name,code',
                 ]);
 

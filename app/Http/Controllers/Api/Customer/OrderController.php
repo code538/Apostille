@@ -36,9 +36,9 @@ class OrderController extends Controller
                     $request->user()->id
                 )
                 ->with([
-                    'lawyer.user:id,name,email',
+                    'lawyerProfile.user:id,name,email',
                     'service:id,name,slug',
-                    'country:id,name,code',
+                    'country:id,name,iso2',
                     'region:id,name',
                     'lawyerServicePricing:id,lawyer_service_region_id,service_level,fee,currency,estimated_days',
                     'deliveryMethod:id,name,slug,type',
@@ -113,6 +113,7 @@ class OrderController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        
         $validated = $request->validate([
 
             'lawyer_service_region_id' => [
@@ -148,7 +149,7 @@ class OrderController extends Controller
                 'max:5000',
             ],
         ]);
-
+        //dd('okk');
         try {
 
             $customer = $request->user();
@@ -183,7 +184,7 @@ class OrderController extends Controller
                                 'active'
                             )
                             ->first();
-
+                    //dd($lawyerServiceRegion);
                     if (! $lawyerServiceRegion) {
 
                         throw new \RuntimeException(
@@ -197,6 +198,7 @@ class OrderController extends Controller
                      *    to selected lawyer service region.
                      * ------------------------------------------------------
                      */
+                    //dd($validated['lawyer_service_pricing_id']);
                     $pricing = LawyerServicePricing::query()
                         ->where(
                             'id',
@@ -358,6 +360,94 @@ class OrderController extends Controller
                      * 8. Create order
                      * ------------------------------------------------------
                      */
+                    $data = [
+                        'customer_id'
+                            => $customer->id,
+
+                        'lawyer_profile_id'
+                            => $lawyerServiceRegion
+                                ->lawyer_profile_id,
+
+                        'lawyer_service_region_id'
+                            => $lawyerServiceRegion->id,
+
+                        'lawyer_service_pricing_id'
+                            => $pricing->id,
+
+                        'service_id'
+                            => $lawyerServiceRegion
+                                ->service_id,
+
+                        'country_id'
+                            => $lawyerServiceRegion
+                                ->country_id,
+
+                        'region_id'
+                            => $lawyerServiceRegion
+                                ->region_id,
+
+                        'delivery_method_id'
+                            => $validated['delivery_method_id'],         
+
+                        'assigned_officer_id'
+                            => null,
+
+                        'order_number'
+                            => $orderNumber,
+
+                        'service_level'
+                            => $validated['service_level'],
+
+                        /*
+                         * Historical snapshot.
+                         */
+                        'service_fee'
+                            => $serviceFee,
+
+                        'currency'
+                            => $pricing->currency,
+
+                        'estimated_processing_days'
+                            => $pricing->estimated_days,
+
+                        /*
+                         * Financial snapshot.
+                         */
+                        'service_fee_total'
+                            => $serviceFeeTotal,
+
+                        'delivery_fee'
+                            => $deliveryFee,
+
+                        'additional_fee'
+                            => $additionalFee,
+
+                        'tax_amount'
+                            => $taxAmount,
+
+                        'discount_amount'
+                            => $discountAmount,
+
+                        'subtotal'
+                            => $subtotal,
+
+                        'total_amount'
+                            => $totalAmount,
+
+                        /*
+                         * Initial order state.
+                         */
+                        'status'
+                            => 'pending_payment',
+
+                        'payment_status'
+                            => 'unpaid',
+
+                        'customer_notes'
+                            => $validated['customer_notes']
+                            ?? null,
+                    ];
+                    //dd($data);
                     return Order::create([
 
                         'customer_id'
@@ -384,6 +474,9 @@ class OrderController extends Controller
                         'region_id'
                             => $lawyerServiceRegion
                                 ->region_id,
+
+                        'delivery_method_id'
+                            => $validated['delivery_method_id'],        
 
                         'assigned_officer_id'
                             => null,
@@ -452,7 +545,7 @@ class OrderController extends Controller
             $order->load([
                 'lawyer.user:id,name,email',
                 'service:id,name,slug',
-                'country:id,name,code',
+                'country:id,name,iso2',
                 'region:id,name',
                 'lawyerServicePricing:id,lawyer_service_region_id,service_level,fee,currency,estimated_days',
                 'deliveryMethod:id,name,slug,type',
@@ -504,10 +597,12 @@ class OrderController extends Controller
                 );
             }
 
+            //dd($order);
+
             $order->load([
                 'lawyer.user:id,name,email,phone',
                 'service:id,name,slug,description',
-                'country:id,name,code',
+                'country:id,name,iso2',
                 'region:id,name',
                 'lawyerServicePricing',
                 'lawyerServiceRegion',
@@ -516,7 +611,7 @@ class OrderController extends Controller
                 'documentRequests',
                 'delivery',
                 'invoices',
-                'payments',
+                //'payments',
                 'certificates',
                 'statusHistories',
             ]);
